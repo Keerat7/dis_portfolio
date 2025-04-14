@@ -41,7 +41,7 @@ import { Routes, Route } from 'react-router-dom'
 import React, { useEffect } from 'react'
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
-//import Projects from './pages/Projects'
+import Projects from './pages/Projects'
 //import About from './pages/About'
 
 function App() {
@@ -62,8 +62,8 @@ function App() {
       <div className="mx-auto max-w-6xl border-l border-r border-gray-300 dark:border-gray-700 px-6 border-none">
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/projects" element={<Projects />} />
-          <Route path="/about" element={<About />} /> */}
+          <Route path="/projects" element={<Projects />} />
+          {/* <Route path="/about" element={<About />} /> */}
         </Routes>
       </div>
     </div>
