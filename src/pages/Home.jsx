@@ -33,7 +33,7 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
-        This is a starting point. We'll build something awesome together!
+        Checkout my design journey and the evolution of my work!
       </motion.p>
 
       <div className='mt-6'>
@@ -52,9 +52,9 @@ export default function Home() {
           <ProjectCard
             title="a really cool project"
             description="too cool to be true"
+            link="https://youtube.com"
           />
         </div>
-
       </div>
 
     </main>
