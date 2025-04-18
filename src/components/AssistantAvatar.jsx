@@ -62,11 +62,25 @@ const AssistantAvatar = () => {
         <Lottie animationData={assistantAnimation} loop autoplay className="w-full h-full pointer-events-none"/>
 
         {showBubble && (
-          <div className="absolute bottom-full mb-2 right-0 z-10
-                          bg-white dark:bg-gray-800
-                          border border-gray-300 dark:border-gray-600
-                          rounded-lg shadow-lg px-4 py-2 max-w-xs">
-            <p className="text-sm text-gray-900 dark:text-white">{message}</p>
+          <div 
+            style={{
+              backgroundColor: 'white',
+              color: '#555', // Gray text color
+              borderRadius: '12px', // Rounded corners
+              position: 'absolute',
+              bottom: '100%', // Position above the avatar
+              marginBottom: '8px', // Space between avatar and bubble (mb-2)
+              right: '0',
+              zIndex: 10, // Ensure bubble is above the animation if needed
+              padding: '8px 16px', // Equivalent to px-4 py-2
+              maxWidth: '20rem', // Equivalent to max-w-xs
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', // Equivalent to shadow-lg
+              border: '1px solid #e5e7eb' // Add a light gray border for definition
+            }}
+          >
+            <p style={{ fontSize: '0.875rem', lineHeight: '1.25rem', fontWeight: '600' /* text-sm */ }}>
+              {message}
+            </p>
           </div>
         )}
       </div>
