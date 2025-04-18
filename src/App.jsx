@@ -42,6 +42,7 @@ import React, { useEffect } from 'react'
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Projects from './pages/Projects'
+import AssistantAvatar from './components/AssistantAvatar'
 //import About from './pages/About'
 
 function App() {
@@ -57,16 +58,19 @@ function App() {
     }
   }, [])
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
-      <Navbar />
-      <div className="mx-auto max-w-6xl border-l border-r border-gray-300 dark:border-gray-700 px-6 border-none">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Projects />} />
-          {/* <Route path="/about" element={<About />} /> */}
-        </Routes>
+    <>
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+        <Navbar />
+        <div className="mx-auto max-w-6xl border-l border-r border-gray-300 dark:border-gray-700 px-6 border-none">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/projects" element={<Projects />} />
+            {/* <Route path="/about" element={<About />} /> */}
+          </Routes>
+        </div>
       </div>
-    </div>
+      <AssistantAvatar/>
+    </>
   )
 }
 
