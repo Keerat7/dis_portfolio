@@ -43,7 +43,7 @@ import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Projects from './pages/Projects'
 import AssistantAvatar from './components/AssistantAvatar'
-//import About from './pages/About'
+import About from './pages/About'
 
 function App() {
   useEffect(() => {
@@ -65,7 +65,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
-            {/* <Route path="/about" element={<About />} /> */}
+            <Route path="/about" element={<About />} />
           </Routes>
         </div>
       </div>
