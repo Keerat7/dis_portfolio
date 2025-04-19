@@ -12,10 +12,7 @@ export default function Navbar() {
           <Link to="/projects">Projects</Link>
         </li>
         <li>
-          <a href="#">About</a>
-           {/* If 'About' is a separate route, change the above to:
           <Link to="/about">About</Link>
-          */}
         </li>
       </ul>
     </nav>
