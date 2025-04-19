@@ -59,14 +59,18 @@ export default function ProjectCard({title,description,link}) {
                     onPointerDown={handlePointerDown}
                     onClick={handleClick}
                 >
-                    <div className="flex items-center gap-6">
-                        <div className="flex-1">
-                            <h2 className="text-xl font-semibold mb-2">{title}</h2>
-                            <p className="text-sm text-gray-600 dark:text-gray-300">{description}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ flex: 1, textAlign: 'left', marginRight: '1rem' }}>
+                            <h2 style={{ textAlign: 'left', marginBottom: '0.5rem', fontSize: '1.25rem', fontWeight: 600 }}>
+                                {title}
+                            </h2>
+                            <p style={{ textAlign: 'left', fontSize: '0.875rem', color: '#FFFFFF' }}>
+                                {description}
+                            </p>
                         </div>
-                        {link && (
-                            <div className="flex items-center justify-center">
-                                <QRCode value={link} size={100} />
+                            {link && (
+                            <div style={{ marginLeft: '1rem' }}>
+                                <QRCode value={link} size={128} />
                             </div>
                         )}
                     </div>
