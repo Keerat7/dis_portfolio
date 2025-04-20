@@ -8,7 +8,7 @@ const projects = [
   { name: "VDC Journal", description: "A collection of my design work throughout the course.", link: "https://docs.google.com/presentation/d/1y_zYf0psw-yzKCfl583M0B7lHcNVLblG/edit?usp=sharing&ouid=100012789284357171338&rtpof=true&sd=true" },
   { name: "DPP Midsem Project", description: "Application of Design Concepts in problem solving.", link: "https://docs.google.com/presentation/d/1n28nbW-XueGnSjiojkC7tcQNEOo1ERiTZE_DfHNh8-c/edit?usp=sharing" },
   { name: "DPP Endsem Project", description: "Application of Design Concepts in problem solving.", link: "https://docs.google.com/presentation/d/1aJiD_QGjKLuYGARJ86N35RGUkSwx8zyIq6FCFN62VO4/edit?usp=sharing" },
-  { name: "This Website", description: "A website based Design Portfolio of my own!", link: "https://example.com" },
+  { name: "This Website", description: "A website based Design Portfolio of my own!", link: "/" },
 ];
 
 const Projects = () => (
@@ -16,9 +16,10 @@ const Projects = () => (
     <h2 className="text-3xl font-bold text-center mb-10">My Projects</h2>
       <div 
         style={{
+          marginTop: '5rem',
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '2rem 3rem',
+          gap: '4rem 6rem',
           justifyItems: 'center',
           alignItems: 'start',
         }}
