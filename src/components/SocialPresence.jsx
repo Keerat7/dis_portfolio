@@ -1,134 +1,69 @@
 import React, { useEffect, useState, useRef } from "react";
 
 const NAMES = ["Alex", "Jordan", "Taylor", "Riley", "Sam", "Morgan", "Jamie"];
+const API_BASE = "https://dis-portfolio.vercel.app/api/presence";    // ← Next.js API route
+const UPDATE_INTERVAL_MS = 15_000;   // ping every 15s
 
-const getRandomName = () => {
-  return NAMES[Math.floor(Math.random() * NAMES.length)];
-};
+const getRandomName = () =>
+  NAMES[Math.floor(Math.random() * NAMES.length)];
 
-const SocialPresence = () => {
+export default function SocialPresence() {
   const [activeUsers, setActiveUsers] = useState([]);
-  // Use useRef to store the current user's ID for this session
   const selfIdRef = useRef(null);
-  const USER_KEY = "portfolio_viewers";
-  const UPDATE_INTERVAL_MS = 15000; 
-  const INACTIVE_TIMEOUT_MS = 5 * 60 * 1000;
+  const nameRef  = useRef(null);
 
-  // Function to ensure the current user is registered or their timestamp is updated
-  const ensureSelfRegisteredOrUpdated = () => {
-    const existingViewers = JSON.parse(localStorage.getItem(USER_KEY) || "[]");
-    const now = Date.now();
-    let selfViewerData = null;
-    let viewersModified = false;
-
-    if (selfIdRef.current) {
-      let found = false;
-      const updatedViewers = existingViewers.map(viewer => {
-        if (viewer.id === selfIdRef.current) {
-          found = true;
-          if (viewer.timestamp !== now) {
-             selfViewerData = { ...viewer, timestamp: now };
-             viewersModified = true;
-             return selfViewerData;
-          } else {
-              selfViewerData = viewer;
-              return viewer;
-          }
-        }
-        return viewer;
-      });
-
-      if (found && viewersModified) {
-        localStorage.setItem(USER_KEY, JSON.stringify(updatedViewers));
-      } else if (!found) {
-        selfIdRef.current = null;
-      } else if (found && !viewersModified) {}
-    }
-
-    if (!selfIdRef.current) {
-      const name = getRandomName();
-      const id = `${name}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`; // Add timestamp for more uniqueness
-      selfViewerData = { id, name, timestamp: now };
-      selfIdRef.current = id;
-
-      const updatedViewers = [...existingViewers, selfViewerData];
-      localStorage.setItem(USER_KEY, JSON.stringify(updatedViewers));
-      viewersModified = true;
-    }
-
-    return { selfViewer: selfViewerData, modified: viewersModified };
-  };
-
-  const cleanUpAndGetActive = () => {
-    const existingViewers = JSON.parse(localStorage.getItem(USER_KEY) || "[]");
-    const now = Date.now();
-    const cutoffTime = now - INACTIVE_TIMEOUT_MS;
-
-    const activeViewers = existingViewers.filter(
-      (viewer) => viewer.timestamp >= cutoffTime
-    );
-
-    if (activeViewers.length !== existingViewers.length) {
-      localStorage.setItem(USER_KEY, JSON.stringify(activeViewers));
-    }
-
-    return activeViewers;
-  };
-
+  // generate or load stable id + name
   useEffect(() => {
-    ensureSelfRegisteredOrUpdated();
-
-    const initialActive = cleanUpAndGetActive();
-    setActiveUsers(initialActive);
-
-    const interval = setInterval(() => {
-      ensureSelfRegisteredOrUpdated();
-      const currentActive = cleanUpAndGetActive();
-      setActiveUsers(currentActive);
-    }, UPDATE_INTERVAL_MS);
-
-    return () => clearInterval(interval);
-
+    let stored = JSON.parse(localStorage.getItem("my_viewer") || "null");
+    if (!stored) {
+      const id   = `${getRandomName()}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+      const name = id.split("-")[0];
+      stored = { id, name };
+      localStorage.setItem("my_viewer", JSON.stringify(stored));
+    }
+    selfIdRef.current = stored.id;
+    nameRef.current   = stored.name;
   }, []);
 
-  const selfIsIncluded = selfIdRef.current && activeUsers.some(u => u.id === selfIdRef.current);
-  const numberOfOthers = activeUsers.filter(u => u.id !== selfIdRef.current).length;
+  // heartbeat + fetch loop
+  useEffect(() => {
+    if (!selfIdRef.current) return;
+    const tick = async () => {
+      // POST our heartbeat
+      await fetch(API_BASE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: selfIdRef.current, name: nameRef.current }),
+      });
+      // GET the full active list
+      const res = await fetch(API_BASE);
+      if (res.ok) {
+        setActiveUsers(await res.json());
+      }
+    };
 
-  let displayText = "👀 Connecting...";
+    tick();                             // run immediately...
+    const iv = setInterval(tick, UPDATE_INTERVAL_MS);
+    return () => clearInterval(iv);
+  }, []);
 
-   if (selfIdRef.current) {
-       if (selfIsIncluded && numberOfOthers > 0) {
-           displayText = `👀 You and ${numberOfOthers} ${numberOfOthers === 1 ? 'other' : 'others'} are here`;
-       } else if (selfIsIncluded) {
-           displayText = "👀 You're the only one here";
-       } else {
-           displayText = "👀 Reconnecting...";
-       }
-   }
-
+  // render
+  const meHere = activeUsers.some(u => u.id === selfIdRef.current);
+  const others = activeUsers.filter(u => u.id !== selfIdRef.current).length;
+  let display = "👀 Connecting…";
+  if (meHere && others > 0)      display = `👀 You and ${others} other${others>1?'s':''} are here`;
+  else if (meHere && others === 0) display = "👀 You're the only one here";
+  else if (!meHere)              display = "👀 Reconnecting…";
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "1.25rem",         // bottom-5
-        right: "50%",              // right-5 -> Adjusted for centering
-        transform: "translateX(50%)", // Center horizontally
-        backgroundColor: "#ffffff",  // bg-white
-        border: "1px solid #e5e7eb",  // border (default gray-200)
-        padding: "0.5rem 1rem",      // py-2 px-4
-        borderRadius: "1.5rem",      // rounded-xl (use Tailwind mapping or actual value)
-        boxShadow:
-          "0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)", // shadow-lg
-        zIndex: 50,                  // z-50
-        fontSize: "0.875rem",        // text-sm
-        color: "#111827",            // default text color (gray-900) - Consider dark mode compatibility if needed
-        whiteSpace: 'nowrap'          // Prevent text wrapping
-      }}
-    >
-      {displayText}
+    <div style={{
+      position: "fixed", bottom: "1.25rem", right: "50%", transform: "translateX(50%)",
+      backgroundColor: "#fff", border: "1px solid #e5e7eb",
+      padding: "0.5rem 1rem", borderRadius: "1.5rem",
+      boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05)",
+      zIndex: 50, fontSize: "0.875rem", color: "#111827", whiteSpace: "nowrap"
+    }}>
+      {display}
     </div>
   );
-};
-
-export default SocialPresence;
+}
