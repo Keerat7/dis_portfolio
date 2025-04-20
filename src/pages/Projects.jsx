@@ -1,4 +1,5 @@
 import React from "react";
+import {motion} from 'framer-motion'
 import ProjectCard from "../components/ProjectCard";
 
 const projects = [
@@ -13,23 +14,30 @@ const projects = [
 
 const Projects = () => (
   <section className="p-8">
-    <h2 className="text-3xl font-bold text-center mb-10">My Projects</h2>
-      <div 
+    <motion.h2 className="text-3xl font-bold text-center mb-10"
+      style={{paddingTop: '2rem'}}
+      initial={{ opacity: 0, y: -30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    > My Projects </motion.h2>
+      <motion.div 
         style={{
           marginTop: '5rem',
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '4rem 6rem',
+          gap: '5rem 6rem',
           justifyItems: 'center',
           alignItems: 'start',
         }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.8 }}
       >
         {projects.map((project, idx) => (
           <div 
             key={idx} 
             style={{
               maxWidth: '350px',
-              height: '160px',
               display: 'flex',
             }}
           >
@@ -40,7 +48,7 @@ const Projects = () => (
             />
           </div>
         ))}
-      </div>
+      </motion.div>
   </section>
 );
 
