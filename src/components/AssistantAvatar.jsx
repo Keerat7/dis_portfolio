@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import assistantAnimation from "../assets/avatar.json";
+import { subscribeToHover } from "../utils/eventBus";
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -36,6 +37,20 @@ const AssistantAvatar = () => {
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [hideTimeout]);
+
+  useEffect(() => {
+    const unsubscribe = subscribeToHover((newMessage) => {
+      setMessage(newMessage);
+      setShowBubble(true);
+  
+      if (hideTimeout) clearTimeout(hideTimeout);
+      const timeout = setTimeout(() => setShowBubble(false), 3000);
+      setHideTimeout(timeout);
+    });
+  
+    return () => unsubscribe();
+  }, [hideTimeout]);
+  
 
   return (
     <div
@@ -75,10 +90,10 @@ const AssistantAvatar = () => {
               padding: '8px 16px', // Equivalent to px-4 py-2
               maxWidth: '20rem', // Equivalent to max-w-xs
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', // Equivalent to shadow-lg
-              border: '1px solid #e5e7eb' // Add a light gray border for definition
+              border: '1px solid #e5e7eb'
             }}
           >
-            <p style={{ fontSize: '0.875rem', lineHeight: '1.25rem', fontWeight: '600' /* text-sm */ }}>
+            <p style={{ fontSize: '0.875rem', lineHeight: '1.25rem', fontWeight: '600' }}>
               {message}
             </p>
           </div>
