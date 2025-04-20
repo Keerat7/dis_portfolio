@@ -44,11 +44,13 @@ export default function ProjectCard({title,description,link}) {
                 glareMaxOpacity={0.3}
                 glareColor="#ffffff"
                 glarePosition="all"
+                glareBorderRadius="1rem"
                 className="w-full max-w-md"
             >
                 <motion.div
                     ref = {cardRef}
                     className="bg-white dark:bg-gray-800 p-6 m-4 rounded-xl shadow-xl border border-gray-300 dark:border-gray-600"
+                    style={{borderRadius: '1rem'}}
                     drag
                     dragConstraints={constraints}
                     dragElastic={0.2}
