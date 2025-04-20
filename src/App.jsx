@@ -48,7 +48,7 @@ function App() {
         <div 
           style={{
             position: 'fixed',
-            top: '1rem',
+            top: '5.5rem',
             right: '1rem',
             display: 'flex',
             alignItems: 'center',
