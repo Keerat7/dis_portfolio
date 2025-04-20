@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 
 const NAMES = ["Alex", "Jordan", "Taylor", "Riley", "Sam", "Morgan", "Jamie"];
-const API_BASE = "https://dis-portfolio.vercel.app/api/presence";    // ← Next.js API route
+const API_BASE = "/api/presence";    // ← Next.js API route
 const UPDATE_INTERVAL_MS = 15_000;   // ping every 15s
 
 const getRandomName = () =>
