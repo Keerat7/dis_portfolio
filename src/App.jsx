@@ -1,49 +1,11 @@
-// import React, { useEffect, useState } from "react";
-// import { motion } from "framer-motion";
-// import Hero from "./components/Hero";
-// import Projects from "./components/Projects";
-// import Agent from "./components/Agent";
-// import SocialPresence from "./components/SocialPresence";
-// import BackgroundMusic from "./components/BackgroundMusic";
-// import './index.css';
-
-// function App() {
-//   const hour = new Date().getHours();
-//   const isNight = hour >= 18 || hour < 6;
-
-//   return (
-//     <div className={isNight ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"}>
-//       <BackgroundMusic />
-//       <Hero />
-//       <Projects />
-//       <Agent />
-//       <SocialPresence />
-//     </div>
-//   );
-// }
-
-// export default App;
-
-// import React from 'react'
-// import Home from './pages/Home'
-// import Navbar from './components/Navbar'
-
-// export default function App() {
-//   return (
-//     <div>
-//       <Navbar />
-//       <Home />
-//     </div>
-//   )
-// }
-
 import { Routes, Route } from 'react-router-dom'
-import React, { useEffect } from 'react'
+import React, { useEffect,useRef,useState } from 'react'
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Projects from './pages/Projects'
 import AssistantAvatar from './components/AssistantAvatar'
 import About from './pages/About'
+import ambient from './assets/ambient.mp3'
 
 function App() {
   useEffect(() => {
@@ -57,6 +19,21 @@ function App() {
       document.documentElement.classList.remove('dark')
     }
   }, [])
+
+  const audioRef = useRef(null)
+  const [isMuted, setIsMuted] = useState(true)
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (audio) {
+      if (!isMuted) {
+        audio.play().catch(e => console.error(e))
+      } else {
+        audio.pause()
+      }
+    }
+  }, [isMuted])
+  
   return (
     <>
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
@@ -67,6 +44,33 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/about" element={<About />} />
           </Routes>
+        </div>
+        <div 
+          style={{
+            position: 'fixed',
+            top: '1rem',
+            right: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}
+        >
+          <button
+            onClick={() => setIsMuted(prev => !prev)}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#3b82f6',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '0.25rem',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s ease'
+            }}
+          >
+            {isMuted ? 'Play' : 'Mute'}
+          </button>
+          <audio ref={audioRef} loop src={ambient} />
         </div>
       </div>
       <AssistantAvatar/>
