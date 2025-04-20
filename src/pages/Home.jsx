@@ -1,21 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import {motion} from 'framer-motion'
 import ProjectCard from '../components/ProjectCard';
 
 export default function Home() {
-  const audioRef = useRef(null);
-  const [isMuted,setIsMuted] = useState(true);
-
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!isMuted && audio) {
-      audio.play().catch(e => console.error(e))
-    }
-    else if (audio) {
-      audio.pause();
-    }
-  }, [isMuted])
-
   return (
     <main className="p-8">
 
@@ -35,16 +22,6 @@ export default function Home() {
       >
         Checkout my design journey and the evolution of my work!
       </motion.p>
-
-      <div className='mt-6'>
-        <button
-        onClick={() => setIsMuted(!isMuted)}
-        className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition'
-        >
-          {isMuted ? "Play Ambient Sound" : "Mute Sound"}
-        </button>
-        <audio ref={audioRef} loop src='/src/assets/ambient.mp3' />
-      </div>
 
       <div className='mt-10 min-h-[300px] overflow-visible relative flex justify-center items-start'>
         <div className='max-w-xs'>
