@@ -9,7 +9,7 @@ const projects = [
   { name: "VDC Journal", description: "A collection of my design work throughout the course.", link: "https://docs.google.com/presentation/d/1y_zYf0psw-yzKCfl583M0B7lHcNVLblG/edit?usp=sharing&ouid=100012789284357171338&rtpof=true&sd=true" },
   { name: "DPP Midsem Project", description: "Application of Design Concepts in problem solving.", link: "https://docs.google.com/presentation/d/1n28nbW-XueGnSjiojkC7tcQNEOo1ERiTZE_DfHNh8-c/edit?usp=sharing" },
   { name: "DPP Endsem Project", description: "Application of Design Concepts in problem solving.", link: "https://docs.google.com/presentation/d/1aJiD_QGjKLuYGARJ86N35RGUkSwx8zyIq6FCFN62VO4/edit?usp=sharing" },
-  { name: "This Website", description: "A website based Design Portfolio of my own!", link: "/" },
+  { name: "This Website", description: "A website based Design Portfolio of my own!", link: "https://dis-portfolio.vercel.app/" },
 ];
 
 const Projects = () => (
