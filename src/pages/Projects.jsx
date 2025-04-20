@@ -19,8 +19,6 @@ const Projects = () => {
     const handleResize = () => {
       if (window.innerWidth <= 640) {
         setColumns(1); // small screen
-      } else if (window.innerWidth <= 1024) {
-        setColumns(2); // medium screen
       } else {
         setColumns(3); // large screen
       }
@@ -43,7 +41,7 @@ const Projects = () => {
         style={{
           marginTop: '5rem',
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: `repeat(${columns}, 1fr)`,
           gap: '5rem 6rem',
           justifyItems: 'center',
           alignItems: 'start',
