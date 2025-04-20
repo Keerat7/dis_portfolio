@@ -2,6 +2,7 @@ import React, { use, useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import Tilt from 'react-parallax-tilt'
 import QRCode from "react-qr-code"
+import { triggerHover } from "../utils/eventBus";
 
 export default function ProjectCard({title,description,link}) {
     const cardRef = useRef(null)
@@ -23,6 +24,18 @@ export default function ProjectCard({title,description,link}) {
         }
     };
 
+    const dialogues = [
+        "Looks interesting, right?",
+        "This one's a favorite!",
+        "Cool project, huh?",
+        "Check this out!"
+    ];
+
+    const handleMouseEnter = () => {
+        const randomMessage = dialogues[Math.floor(Math.random() * dialogues.length)];
+        triggerHover(randomMessage);
+    };
+
     useEffect(() => {
         if (cardRef.current) {
             const bounds = cardRef.current.getBoundingClientRect()
@@ -36,6 +49,7 @@ export default function ProjectCard({title,description,link}) {
     }, [])
 
     return (
+        <div onMouseEnter={handleMouseEnter}>
         <div className="flex justify-center">
             <Tilt
                 tiltMaxAngleX={15}
@@ -78,6 +92,7 @@ export default function ProjectCard({title,description,link}) {
                     </div>
                 </motion.div>
             </Tilt>
+        </div>
         </div>
     )
 }
