@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {motion} from 'framer-motion'
 import ProjectCard from "../components/ProjectCard";
 
@@ -12,7 +12,26 @@ const projects = [
   { name: "This Website", description: "A website based Design Portfolio of my own!", link: "https://dis-portfolio.vercel.app/" },
 ];
 
-const Projects = () => (
+const Projects = () => {
+  const [columns, setColumns] = useState(3);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 640) {
+        setColumns(1); // small screen
+      } else if (window.innerWidth <= 1024) {
+        setColumns(2); // medium screen
+      } else {
+        setColumns(3); // large screen
+      }
+    };
+
+    handleResize(); // set initially
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
   <section className="p-8">
     <motion.h2 className="text-3xl font-bold text-center mb-10"
       style={{paddingTop: '2rem'}}
@@ -50,6 +69,7 @@ const Projects = () => (
         ))}
       </motion.div>
   </section>
-);
+  );
+};
 
 export default Projects;
